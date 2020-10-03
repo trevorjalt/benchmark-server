@@ -1,4 +1,4 @@
-require('dotenv').config();
+// require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
@@ -7,13 +7,13 @@ const { NODE_ENV } = require('./config');
 
 const app = express();
 
-const morganOption = (NODE_ENV === 'production')
-  ? 'dev'
-  : 'common';
 
-app.use(morgan(morganOption));
-app.use(helmet());
-app.use(cors());
+app.use(morgan((NODE_ENV === 'production') ? 'tiny' : 'common', {
+    skip: () => NODE_ENV === 'test',
+  }))
+app.use(cors())
+app.use(helmet())
+
 
 app.get('/', (req, res) => {
     res.send('Hello, world!');
@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 app.use(function errorHandler(error, req, res, next) {
     let response;
     if (NODE_ENV === 'production') {
-        response = { error: { messages: 'server error' } };
+        response = { error: { message: 'server error' } };
     } else {
         console.error(error)
         response = { message: error.message, error };

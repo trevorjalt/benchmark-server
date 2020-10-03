@@ -1,17 +1,19 @@
 {
-  "name": "express-boilerplate",
+  "name": "benchmark-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
     "test": "mocha --require test/setup.js",
     "dev": "nodemon src/server.js",
+    "migrate": "postgrator --config postgrator-config.js",
+    "migrate:test": "env NODE_ENV=test npm run migrate",
     "start": "node src/server.js",
     "predeploy": "npm audit",
     "deploy": "git push heroku master"
   },
   "keywords": [],
-  "author": "",
+  "author": "Trevor J Alt",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
