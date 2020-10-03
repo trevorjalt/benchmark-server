@@ -17,7 +17,6 @@ async function postUserLogin(req, res, next) {
     try {
         const { username, user_password } = req.body
         const loginUser = { username, user_password }
-        console.log(req)
     
         for (const [key, value] of Object.entries(loginUser))
         if (value == null)
@@ -32,14 +31,14 @@ async function postUserLogin(req, res, next) {
     
         if (!user)
         return await res.status(400).json({
-            error: 'Incorrect user_name or password',
+            error: 'Invalid username or password',
         })
         
         let compareMatch = await AuthService.comparePasswords(loginUser.user_password, user.user_password)
     
         if (!compareMatch)
             return await res.status(400).json({
-            error: 'Incorrect user_name or password',
+            error: 'Invalid username or password',
                 })
         
         const sub = user.username

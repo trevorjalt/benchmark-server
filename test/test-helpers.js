@@ -21,7 +21,7 @@ function makeUsersArray() {
         },
         {
             id: 3,
-            username: 'test-user-1',
+            username: 'test-user-3',
             user_password: 'password',
             email: 'email3@email.com',
             nickname: 'TU2',
@@ -142,7 +142,7 @@ function cleanTables(db) {
 function seedUsers(db, users) {
     const preppedUsers = users.map(user => ({
         ...user,
-        password: bcrypt.hashSync(user.password, 1)
+        user_password: bcrypt.hashSync(user.user_password, 1)
     }))
     return db.into('benchmark_user').insert(preppedUsers)
         .then(() =>
@@ -155,7 +155,7 @@ function seedUsers(db, users) {
 
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
     const token = jwt.sign({ user_id: user.id }, secret, {
-        subject: user.user_name,
+        subject: user.username,
         algorithm: 'HS256',
     })
     return `Bearer ${token}`
