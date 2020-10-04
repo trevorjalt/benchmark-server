@@ -4,7 +4,7 @@ const app = require('../src/app')
 const helpers = require('./test-helpers')
 const supertest = require('supertest')
 
-describe.only('Auth Endpoints', function() {
+describe('Workout Endpoints', function() {
     let db
 
     const { testUsers, testWorkouts } = helpers.makeWorkoutsFixtures()
@@ -104,10 +104,88 @@ describe.only('Auth Endpoints', function() {
                         expect(actualDate).to.eql(expectedDate)
                     })
                 )
-          })
-
+        })
+    })
         
-
+    
+    describe(`GET /api/workout/:workout_id`, () => {
+        context(`Given no workouts`, () => {
+            beforeEach(() =>
+                helpers.seedUsers(db, testUsers)
+            )
+      
+            it(`responds with 404`, () => {
+                const workoutId = 123456
+                return supertest(app)
+                    .get(`/api/workout/${workoutId}`)
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                    .expect(404, { error: { message: `Workout not found` }})
+            })
+          })
+      
+        context('Given there are workouts in the database', () => {
+            beforeEach('insert workouts', () =>
+                helpers.seedBenchmarkTables(
+                    db,
+                    testUsers,
+                    testWorkouts,
+                )
+            )
+      
+            it('responds with 200 and the specified workout', () => {
+                const workoutId = 2
+                
+                const expectedWorkout = helpers.makeExpectedWorkout( 
+                    testWorkouts[workoutId - 1],
+                )
+      
+                return supertest(app)
+                    .get(`/api/workout/${workoutId}`)
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                    .expect(200, expectedWorkout)
+            })
+        })
     })
 
+    describe(`DELETE /api/workout/:workout_id`, () => {
+        context(`Given no workouts`, () => {
+            beforeEach(() =>
+                helpers.seedUsers(db, testUsers)
+            )
+            it(`responds with 404 'Workout not found'`, () => {
+                const workoutId = 123456
+                return supertest(app)
+                .delete(`/api/workout/${workoutId}`)
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                .expect(404, { error: { message: `Workout not found` } })
+            })
+        })
+    
+        context('Given there are workouts in the database', () => {
+            beforeEach('insert workouts', () =>
+                helpers.seedBenchmarkTables(
+                    db,
+                    testUsers,
+                    testWorkouts,
+                )
+            )
+        
+            it('responds with 204 and removes the selected workout', () => {
+                const idToRemove = 2
+                const expectedWorkouts = testWorkouts.filter(workout => workout.id !== idToRemove)
+                return supertest(app)
+                .delete(`/api/workout/${idToRemove}`)
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                .expect(204)
+                .then(res =>
+                    supertest(app)
+                    .get(`/api/workout`)
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                    .expect(expectedWorkouts)
+                )
+            })
+        })
+      })
+
 })
+

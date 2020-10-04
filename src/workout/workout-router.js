@@ -28,9 +28,7 @@ async function getWorkouts(req, res, next) {
 
 async function createWorkout(req, res, next) {
     try {
-        const newWorkout = {
-            date_created: 'now()',
-        }
+        const newWorkout = {}
 
         newWorkout.user_id = req.user.id
 
@@ -58,7 +56,7 @@ async function checkWorkoutExists(req, res, next) {
 
         if(!workout)
             return await res.status(404).json({
-                error: `Workout not found`
+                error: { message:`Workout not found` }
             })
 
         res.workout = workout

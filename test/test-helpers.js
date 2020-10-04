@@ -186,6 +186,7 @@ function makeExpectedWorkout(workout) {
     return {
         id: workout.id,
         date_created: workout.date_created.toISOString(),
+        user_id: workout.user_id,
     }
 }
 

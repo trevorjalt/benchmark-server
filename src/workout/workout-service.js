@@ -7,12 +7,8 @@ const WorkoutService = {
             .from('benchmark_workout AS work')
             .select(
                 'work.id',
-                'work.date_created'
-            )
-            .leftJoin(
-                'benchmark_user AS usr',
+                'work.date_created',
                 'work.user_id',
-                'usr.id',
             )
     },
 
@@ -21,7 +17,8 @@ const WorkoutService = {
             .from('benchmark_workout AS work')
             .select(
                 'work.id',
-                'work.date_created'
+                'work.date_created',
+                'work.user_id'
             )
             .where('work.id', id)
             .first()
@@ -30,7 +27,8 @@ const WorkoutService = {
     serializeWorkout(workout) {
         return {
             id: workout.id,
-            date_created: new Date(workout.date_created),
+            date_created: workout.date_created,
+            user_id: workout.user_id
         }
     },
 
