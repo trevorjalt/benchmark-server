@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 const { expect } = require('chai')
+const supertest = require('supertest')
 
 describe('Users Endpoints', function() {
     let db
@@ -114,6 +115,19 @@ describe('Users Endpoints', function() {
                     .send(userPasswordNotComplex)
                     .expect(400, { error: `Password must contain 1 upper case, lower case, number and special character` })
             })
+
+            it(`responds 400 error when email is not a valid address`, () => {
+                const emailInvalidFormat = {
+                    username: 'test username',
+                    user_password: '11AAaab!',
+                    email: 'incorrect',
+                }
+                return supertest(app)
+                    .post('/api/user')
+                    .send(emailInvalidFormat)
+                    .expect(400, { error: `Email must be a valid address`})
+
+            })
     
             it(`responds 400 'Username already taken' when username isn't unique`, () => {
                 const duplicateUser = {
@@ -137,6 +151,51 @@ describe('Users Endpoints', function() {
                     .post('/api/user')
                     .send(duplicateUser)
                     .expect(400, { error: `Email is already associated with an user account` })
+            })
+
+            context(`Happy path`, () => {
+                it(`responds 201, serialized user, storing bcryped password`, () => {
+                    const newUser = {
+                        username: 'test user_name',
+                        user_password: '11AAaa!!',
+                        email: 'test@test.com',
+                    }
+                    return supertest(app)
+                        .post('/api/user')
+                        .send(newUser)
+                        .expect(201)
+                        .expect(res => {
+                            expect(res.body).to.have.property('id')
+                            expect(res.body.username).to.eql(newUser.username)
+                            expect(res.body.email).to.eql(newUser.email)
+                            expect(res.body.nickname).to.eql('')
+                            expect(res.body).to.not.have.property('user_password')
+                            expect(res.headers.location).to.eql(`/api/user/${res.body.id}`)
+                            const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' })
+                            const actualDate = new Date(res.body.date_created).toLocaleString()
+                            expect(actualDate).to.eql(expectedDate)
+                        })
+                        .expect(res =>
+                            db
+                                .from('benchmark_user')
+                                .select('*')
+                                .where({ id: res.body.id })
+                                .first()
+                                .then(row => {
+                                    expect(row.username).to.eql(newUser.username)
+                                    expect(row.email).to.eql(newUser.email)
+                                    expect(row.nickname).to.eql(null)
+                                    const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' })
+                                    const actualDate = new Date(row.date_created).toLocaleString()
+                                    expect(actualDate).to.eql(expectedDate)
+    
+                                    return bcrypt.compare(newUser.user_password, row.user_password)
+                                })
+                                .then(compareMatch => {
+                                    expect(compareMatch).to.be.true
+                                })
+                            )
+                })
             })
         })
     })

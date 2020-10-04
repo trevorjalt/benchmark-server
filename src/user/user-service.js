@@ -2,6 +2,7 @@ const xss = require('xss')
 const bcrypt = require('bcryptjs')
 
 const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/
+const REGEX_EMAIL = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 
 const UserService = {
     hasUserWithUserEmail(db, email) {
@@ -46,6 +47,13 @@ const UserService = {
         return bcrypt.hash(user_password, 12)
     },
 
+    validateEmail(email){
+        if (!REGEX_EMAIL.test(email)) {
+            return 'Email must be a valid address'
+        }
+        return null
+    },
+
     serializeUser(user) {
         return {
             id: user.id,
@@ -65,7 +73,7 @@ const UserService = {
                 'usr.email',
                 'usr.nickname',
                 'usr.date_created',
-            )
+            )       
     },
 
     getById(db, id) {

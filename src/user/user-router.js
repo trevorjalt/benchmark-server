@@ -30,6 +30,11 @@ async function registerUser(req, res, next) {
 
         if (passwordError)
                 return await res.status(400).json({ error: passwordError })
+
+        const emailError = await UserService.validateEmail(email)
+
+        if (emailError)
+                return await res.status(400).json({ error: emailError })
         
         const emailRegistered = await UserService.hasUserWithUserEmail(
             req.app.get('db'),
