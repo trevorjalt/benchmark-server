@@ -153,12 +153,40 @@ function seedUsers(db, users) {
         )
 }
 
+function seedBenchmarkTables(db, users, workouts, exercises, sets) {
+    // use a transaction to group the queries and auto rollback on any failure
+    return db.transaction(async trx => {
+      await seedUsers(trx, users)
+      await trx.into('benchmark_workout').insert(workouts)
+      // update the auto sequence to match the forced id values
+      await trx.raw(
+        `SELECT setval('benchmark_workout_id_seq', ?)`,
+        [workouts[workouts.length - 1].id],
+      )
+      // only insert comments if there are some, also update the sequence counter
+    //   if (comments.length) {
+    //     await trx.into('blogful_comments').insert(comments)
+    //     await trx.raw(
+    //       `SELECT setval('blogful_comments_id_seq', ?)`,
+    //       [comments[comments.length - 1].id],
+    //     )
+    //   }
+    })
+  }
+
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
     const token = jwt.sign({ user_id: user.id }, secret, {
         subject: user.username,
         algorithm: 'HS256',
     })
     return `Bearer ${token}`
+}
+
+function makeExpectedWorkout(workout) {
+    return {
+        id: workout.id,
+        date_created: workout.date_created.toISOString(),
+    }
 }
 
 module.exports = {
@@ -170,5 +198,7 @@ module.exports = {
     makeWorkoutsFixtures,
     cleanTables,
     seedUsers,
+    seedBenchmarkTables,
     makeAuthHeader,
+    makeExpectedWorkout,
 }
