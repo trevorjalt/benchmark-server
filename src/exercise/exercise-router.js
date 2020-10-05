@@ -124,20 +124,9 @@ async function updateSelectedExercise(req, res, next) {
         await res.status(204).end()
 
         next()
-    } catch {error} {
+    } catch (error) {
         next(error)
     }
 }
 
-
-//     CommentsService.updateComment(
-//       req.app.get('db'),
-//       req.params.comment_id,
-//       commentToUpdate
-//     )
-//       .then(numRowsAffected => {
-//         res.status(204).end()
-//       })
-//       .catch(next)
-//   })
 module.exports = exerciseRouter

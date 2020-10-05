@@ -42,7 +42,7 @@ describe('Exercise Endpoints', function() {
         })
 
         context(`Given there are exercises in the database`, () => {
-            beforeEach('insert workouts', () =>
+            beforeEach('insert exercises', () =>
                 helpers.seedBenchmarkTables(
                     db,
                     testUsers,
@@ -177,5 +177,159 @@ describe('Exercise Endpoints', function() {
             })
         })
 
+    })
+
+    describe(`DELETE /api/exercise/:exercise_id`, () => {
+        context(`Given no exercises in the database`, () => {
+            beforeEach(() =>
+                helpers.seedUsers(db, testUsers)
+            )
+            it(`responds with 404 'Exercise not found'`, () => {
+                const exerciseId = 123456
+                return supertest(app)
+                .delete(`/api/exercise/${exerciseId}`)
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                .expect(404, { error: { message: `Exercise not found` } })
+            })
+        })
+    
+        context('Given there are exercises in the database', () => {
+            beforeEach('insert exercises', () =>
+                helpers.seedBenchmarkTables(
+                    db,
+                    testUsers,
+                    testWorkouts,
+                    testExercises,
+                )
+            )
+        
+            it('responds with 204 and removes the selected exercise', () => {
+                const idToRemove = 2
+                const expectedExercises = testExercises.filter(exercise => exercise.id !== idToRemove)
+                return supertest(app)
+                .delete(`/api/exercise/${idToRemove}`)
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                .expect(204)
+                .then(res =>
+                    supertest(app)
+                    .get(`/api/exercise`)
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                    .expect(expectedExercises)
+                )
+            })
+        })
+    })
+
+    describe(`PATCH /api/exercise/:exercise_id`, () => {
+        context(`Given no exercises in the database`, () => {
+            beforeEach(() =>
+                helpers.seedUsers(db, testUsers)
+            )
+          
+            it(`responds with 404`, () => {
+                const exerciseId = 123456
+                return supertest(app)
+                    .delete(`/api/exercise/${exerciseId}`)
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                    .expect(404, { error: { message: `Exercise not found` } })
+            })
+        })
+    
+        context('Given there are exercises in the database', () => {
+            beforeEach('insert exercises', () =>
+                helpers.seedBenchmarkTables(
+                    db,
+                    testUsers,
+                    testWorkouts,
+                    testExercises,
+                )
+            )
+    
+            it('responds with 204 and updates the exercise', () => {
+                const idToUpdate = 2
+                const updateExercise = {
+                    exercise_name: 'updated exercise name',
+                }
+                const expectedExercise = {
+                    ...testExercises[idToUpdate - 1],
+                    ...updateExercise
+                }
+                return supertest(app)
+                    .patch(`/api/exercise/${idToUpdate}`)
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                    .send(updateExercise)
+                    .expect(204)
+                    .then(res =>
+                        supertest(app)
+                        .get(`/api/exercise/${idToUpdate}`)
+                        .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                        .expect(expectedExercise)
+                    )
+            })
+    
+            it(`responds with 400 when no required fields supplied`, () => {
+                const idToUpdate = 2
+                return supertest(app)
+                    .patch(`/api/exercise/${idToUpdate}`)
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                    .send({ irrelevantField: 'foo' })
+                    .expect(400, {
+                        error: { message: `Invalid request`}
+                    })
+            })
+    
+            it(`responds with 204 when updating only a subset of fields`, () => {
+                const idToUpdate = 2
+                const updateExercise = {
+                    exercise_name: 'test-exercise-name',
+                }
+                const expectedExercise = {
+                    ...testExercises[idToUpdate - 1],
+                    ...updateExercise
+                }
+        
+                return supertest(app)
+                    .patch(`/api/exercise/${idToUpdate}`)
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                    .send({
+                        ...updateExercise,
+                        fieldToIgnore: 'should not be in GET response'
+                    })
+                    .expect(204)
+                    .then(res =>
+                        supertest(app)
+                        .get(`/api/exercise/${idToUpdate}`)
+                        .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                        .expect(expectedExercise)
+                    )
+            })
+        })
+
+        // context(`Given an XSS attack update`, () => {
+        //     const testUser = testUsers[0]
+        //     const testWorkout = testWorkouts[0]
+        //     const {
+        //         maliciousExercise,
+        //         expectedExercise,
+        //     } = helpers.makeMaliciousExercise(testUser, testWorkout)
+      
+        //     beforeEach('insert malicious exercise', () => {
+        //         return helpers.seedMaliciousExercise(
+        //             db,
+        //             // testUser,
+        //             maliciousExercise,
+        //         )
+        //     })
+      
+        //     it('removes XSS attack content', () => {
+        //         return supertest(app)
+        //             .get(`/api/exercise/${maliciousExercise.id}`)
+        //             .set('Authorization', helpers.makeAuthHeader(testUser))
+        //             .expect(200)
+        //             .expect(res => {
+        //             expect(res.body.exercise_name).to.eql(expectedExercise.exercise_name)
+        //             })
+        //     })
+        // })
     })
 })

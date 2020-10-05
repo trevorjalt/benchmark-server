@@ -9,7 +9,7 @@ function makeUsersArray() {
             user_password: 'password',
             email: 'email@email.com',
             nickname: 'TU1',
-            date_created: new Date(),
+            date_created: new Date().toISOString(),
         },
         {
             id: 2,
@@ -17,7 +17,7 @@ function makeUsersArray() {
             user_password: 'password',
             email: 'email2@email.com',
             nickname: 'TU2',
-            date_created: new Date(),
+            date_created: new Date().toISOString(),
         },
         {
             id: 3,
@@ -25,7 +25,7 @@ function makeUsersArray() {
             user_password: 'password',
             email: 'email3@email.com',
             nickname: 'TU2',
-            date_created: new Date(),
+            date_created: new Date().toISOString(),
         }
     ]
 }
@@ -34,17 +34,17 @@ function makeWorkoutsArray(users) {
     return [
         {
             id: 1,
-            date_created: new Date(),
+            date_created: new Date().toISOString(),
             user_id: users[0].id
         },
         {
             id: 2,
-            date_created: new Date(),
+            date_created: new Date().toISOString(),
             user_id: users[0].id
         },
         {
             id: 3,
-            date_created: new Date(),
+            date_created: new Date().toISOString(),
             user_id: users[0].id
         },
     ]
@@ -55,21 +55,21 @@ function makeExercisesArray(users, workouts) {
         {
             id: 1,
             exercise_name: 'exercise',
-            date_created: new Date(),
+            date_created: new Date().toISOString(),
             workout_id: workouts[0].id,
             user_id: users[0].id
         },
         {
             id: 2,
             exercise_name: 'exercise2',
-            date_created: new Date(),
+            date_created: new Date().toISOString(),
             workout_id: workouts[0].id,
             user_id: users[0].id
         },
         {
             id: 3,
             exercise_name: 'exercise3',
-            date_created: new Date(),
+            date_created: new Date().toISOString(),
             workout_id: workouts[0].id,
             user_id: users[0].id
         },
@@ -82,7 +82,7 @@ function makeSetsArray(users, exercises) {
             id: 1,
             set_weight: 100,
             set_repetition: 8,
-            date_created: new Date(),
+            date_created: new Date().toISOString(),
             exercise_id: exercises[0].id,
             user_id: users[0].id
         },
@@ -90,7 +90,7 @@ function makeSetsArray(users, exercises) {
             id: 2,
             set_weight: 200,
             set_repetition: 5,
-            date_created: new Date(),
+            date_created: new Date().toISOString(),
             exercise_id: exercises[0].id,
             user_id: users[0].id
         },
@@ -98,7 +98,7 @@ function makeSetsArray(users, exercises) {
             id: 3,
             set_weight: 300,
             set_repetition: 3,
-            date_created: new Date(),
+            date_created: new Date().toISOString(),
             exercise_id: exercises[0].id,
             user_id: users[0].id
         },
@@ -124,7 +124,7 @@ function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
 function makeExpectedWorkout(workout) {
     return {
         id: workout.id,
-        date_created: workout.date_created.toISOString(),
+        date_created: workout.date_created,
         user_id: workout.user_id,
     }
 }
@@ -133,11 +133,17 @@ function makeExpectedExercise(exercise) {
     return {
         id: exercise.id,
         exercise_name: exercise.exercise_name,
-        date_created: exercise.date_created.toISOString(),
+        date_created: exercise.date_created,
         workout_id: exercise.workout_id,
         user_id: exercise.user_id,
     }
 }
+
+// function makeExpectedExerciseUpdate(workout) {
+//     return {
+//         exercise_name: workout.exercise_name
+//     }
+// }
 
 function makeMaliciousExercise(user, workout) {
     
@@ -157,6 +163,21 @@ function makeMaliciousExercise(user, workout) {
         expectedExercise,
     }
 }
+
+// function makeMaliciousExerciseUpdate() {
+
+//     const maliciousUpdate = {
+//         exercise_name: 'Naughty naughty very naughty <script>alert("xss");</script>'
+//     }
+//     const expectedUpdate = {
+//         ...makeExpectedExerciseUpdate(maliciousUpdate),
+//         exercise_name: 'Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
+//     }
+//     return {
+//         maliciousUpdate,
+//         expectedUpdate,
+//     }
+// }
 
 function seedUsers(db, users) {
     const preppedUsers = users.map(user => ({
@@ -235,7 +256,10 @@ module.exports = {
     makeAuthHeader,
     makeExpectedWorkout,
     makeExpectedExercise,
+    // makeExpectedExerciseUpdate,
     makeMaliciousExercise,
+    // makeMaliciousExerciseUpdate,
+
     seedUsers,
     seedBenchmarkTables,
     seedMaliciousExercise,

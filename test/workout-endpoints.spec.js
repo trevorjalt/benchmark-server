@@ -142,7 +142,7 @@ describe('Workout Endpoints', function() {
     })
 
     describe(`DELETE /api/workout/:workout_id`, () => {
-        context(`Given no workouts`, () => {
+        context(`Given no workouts in the database`, () => {
             beforeEach(() =>
                 helpers.seedUsers(db, testUsers)
             )
@@ -179,7 +179,7 @@ describe('Workout Endpoints', function() {
                 )
             })
         })
-      })
+    })
 
 })
 
