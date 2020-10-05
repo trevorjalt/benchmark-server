@@ -1,5 +1,4 @@
 const xss = require('xss')
-const userRouter = require('../user/user-router')
 
 const ExerciseService = {
     getAllExercises(db) {

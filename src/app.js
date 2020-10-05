@@ -8,6 +8,7 @@ const authRouter = require('./auth/auth-router')
 const userRouter = require('./user/user-router')
 const workoutRouter = require('./workout/workout-router')
 const exerciseRouter = require('./exercise/exercise-router')
+const setRouter = require ('./set/set-router')
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
 app.use('/api/workout', workoutRouter)
 app.use('/api/exercise', exerciseRouter)
+app.use('/api/set', setRouter)
 
 
 app.get('/', (req, res) => {
