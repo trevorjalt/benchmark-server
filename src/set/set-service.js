@@ -8,7 +8,7 @@ const SetService = {
                 'exercise_set.id',
                 'exercise_set.set_weight',
                 'exercise_set.set_repetition',
-                'exercise_set.date_modified',
+                'exercise_set.date_created',
                 'exercise_set.exercise_id',
                 'exercise_set.user_id',
             )
@@ -33,8 +33,8 @@ const SetService = {
     serializeSet(exercise_set) {
         return {
             id: exercise_set.id,
-            set_weight: xss(exercise_set.set_weight),
-            set_repetition: xss(exercise_set.set_repetition),
+            set_weight: Number(xss(exercise_set.set_weight)),
+            set_repetition: Number(xss(exercise_set.set_repetition)),
             date_created: exercise_set.date_created,
             exercise_id: exercise_set.exercise_id,
             user_id: exercise_set.user_id,

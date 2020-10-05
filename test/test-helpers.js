@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const xss = require('xss')
 
 function makeUsersArray() {
     return [
@@ -139,6 +140,17 @@ function makeExpectedExercise(exercise) {
     }
 }
 
+function makeExpectedSet(exercise_set) {
+    return {
+        id: exercise_set.id,
+        set_weight: exercise_set.set_weight,
+        set_repetition: exercise_set.set_repetition,
+        date_created: exercise_set.date_created,
+        exercise_id: exercise_set.exercise_id,
+        user_id: exercise_set.user_id,
+    }
+}
+
 // function makeExpectedExerciseUpdate(workout) {
 //     return {
 //         exercise_name: workout.exercise_name
@@ -161,6 +173,27 @@ function makeMaliciousExercise(user, workout) {
     return {
         maliciousExercise,
         expectedExercise,
+    }
+}
+
+function makeMaliciousSet(user, exercise) {
+
+    const maliciousSet = {
+        id: 911,
+        set_weight: 'Naughty naughty very naughty <script>alert("xss");</script>',
+        set_repetition: 'Naughty naughty very naughty <script>alert("xss");</script>',
+        date_created: new Date(),
+        exercise_id: exercise.id,
+        user_id: user.id,
+    }
+    const expectedSet = {
+        ...makeExpectedSet(maliciousSet),
+        set_weight: 'Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
+        set_repetition: 'Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
+    }
+    return {
+        maliciousSet,
+        expectedSet,
     }
 }
 
@@ -193,7 +226,7 @@ function seedUsers(db, users) {
         )
 }
 
-function seedBenchmarkTables(db, users, workouts, exercises, sets) {
+function seedBenchmarkTables(db, users, workouts, exercises, exercise_sets) {
     // use a transaction to group the queries and auto rollback on any failure
     return db.transaction(async trx => {
         await seedUsers(trx, users)
@@ -210,7 +243,15 @@ function seedBenchmarkTables(db, users, workouts, exercises, sets) {
                 `SELECT setval('benchmark_exercise_id_seq', ?)`,
                 [exercises[exercises.length -1].id],
             )
-        } 
+        }
+        //only insert sets if there are some, also update the sequence counter
+        if (exercise_sets) {
+            await trx.into('benchmark_set').insert(exercise_sets)
+            await trx.raw(
+                `SELECT setval('benchmark_set_id_seq', ?)`,
+                [exercise_sets[exercise_sets.length -1].id],
+            )
+        }
     })
 }
 
@@ -219,6 +260,12 @@ function seedMaliciousExercise(db, exercise) {
         .into('benchmark_exercise')
         .insert([exercise])
       
+}
+
+function seedMaliciousSet(db, exercise_set) {
+    return db
+        .into('benchmark_set')
+        .insert([exercise_set])
 }
 
 function cleanTables(db) {
@@ -256,13 +303,16 @@ module.exports = {
     makeAuthHeader,
     makeExpectedWorkout,
     makeExpectedExercise,
+    makeExpectedSet,
     // makeExpectedExerciseUpdate,
     makeMaliciousExercise,
     // makeMaliciousExerciseUpdate,
+    makeMaliciousSet,
 
     seedUsers,
     seedBenchmarkTables,
     seedMaliciousExercise,
+    seedMaliciousSet,
     cleanTables,
     
 }

@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const SetService = require('./set-service')
 const { requireAuth } = require('../middleware/jwt-auth')
+const { default: xss } = require('xss')
 
 
 const setRouter = express.Router()
@@ -69,7 +70,7 @@ async function checkSetExists(req, res, next) {
 
         if(!expectedSet)
             return await res.status(404).json({
-                error: { message:`Set not found` }
+                error: { message:`Exercise set not found` }
             })
 
         res.expectedSet = expectedSet

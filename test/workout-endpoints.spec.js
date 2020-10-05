@@ -7,7 +7,7 @@ describe('Workout Endpoints', function() {
     let db
 
     const { testUsers, testWorkouts } = helpers.makeWorkoutsFixtures()
-    // const testUser = testUsers[0]
+    const testUser = testUsers[0]
 
     before('make knex instance', () => {
         db = knex({
@@ -34,7 +34,7 @@ describe('Workout Endpoints', function() {
             it(`responds with 200 and an empty list`, () => {
                 return supertest(app)
                     .get('/api/workout')
-                    .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                    .set('Authorization', helpers.makeAuthHeader(testUser))
                     .expect(200, [])
             })
         })
@@ -54,7 +54,7 @@ describe('Workout Endpoints', function() {
                 )
                 return supertest(app)
                         .get('/api/workout')
-                        .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                        .set('Authorization', helpers.makeAuthHeader(testUser))
                         .expect(200, expectedWorkouts)
             })
         })
@@ -70,11 +70,10 @@ describe('Workout Endpoints', function() {
 
         it(`creates a workout, responding with 201 and the new workout`, function() {
             this.retries(3)
-            const testUser = testUsers[0]
             const newWorkout = {}
             return supertest(app)
                 .post('/api/workout')
-                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                .set('Authorization', helpers.makeAuthHeader(testUser))
                 .send(newWorkout)
                 .expect(201)
                 .expect(res => {
@@ -112,7 +111,7 @@ describe('Workout Endpoints', function() {
                 const workoutId = 123456
                 return supertest(app)
                     .get(`/api/workout/${workoutId}`)
-                    .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                    .set('Authorization', helpers.makeAuthHeader(testUser))
                     .expect(404, { error: { message: `Workout not found` }})
             })
         })
@@ -135,7 +134,7 @@ describe('Workout Endpoints', function() {
       
                 return supertest(app)
                     .get(`/api/workout/${workoutId}`)
-                    .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                    .set('Authorization', helpers.makeAuthHeader(testUser))
                     .expect(200, expectedWorkout)
             })
         })
@@ -150,7 +149,7 @@ describe('Workout Endpoints', function() {
                 const workoutId = 123456
                 return supertest(app)
                 .delete(`/api/workout/${workoutId}`)
-                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                .set('Authorization', helpers.makeAuthHeader(testUser))
                 .expect(404, { error: { message: `Workout not found` } })
             })
         })
@@ -169,12 +168,12 @@ describe('Workout Endpoints', function() {
                 const expectedWorkouts = testWorkouts.filter(workout => workout.id !== idToRemove)
                 return supertest(app)
                 .delete(`/api/workout/${idToRemove}`)
-                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                .set('Authorization', helpers.makeAuthHeader(testUser))
                 .expect(204)
                 .then(res =>
                     supertest(app)
                     .get(`/api/workout`)
-                    .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                    .set('Authorization', helpers.makeAuthHeader(testUser))
                     .expect(expectedWorkouts)
                 )
             })
