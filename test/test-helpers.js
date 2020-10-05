@@ -113,6 +113,93 @@ function makeWorkoutsFixtures() {
     return { testUsers, testWorkouts, testExercises, testSets }
 }
 
+function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
+    const token = jwt.sign({ user_id: user.id }, secret, {
+        subject: user.username,
+        algorithm: 'HS256',
+    })
+    return `Bearer ${token}`
+}
+
+function makeExpectedWorkout(workout) {
+    return {
+        id: workout.id,
+        date_created: workout.date_created.toISOString(),
+        user_id: workout.user_id,
+    }
+}
+
+function makeExpectedExercise(exercise) {
+    return {
+        id: exercise.id,
+        exercise_name: exercise.exercise_name,
+        date_created: exercise.date_created.toISOString(),
+        workout_id: exercise.workout_id,
+        user_id: exercise.user_id,
+    }
+}
+
+function makeMaliciousExercise(user, workout) {
+    
+    const maliciousExercise = {
+        id: 911,
+        exercise_name: 'Naughty naughty very naughty <script>alert("xss");</script>',
+        date_created: new Date(),
+        workout_id: workout.id,
+        user_id: user.id,
+    }
+    const expectedExercise = {
+        ...makeExpectedExercise(maliciousExercise),
+        exercise_name: 'Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
+    }
+    return {
+        maliciousExercise,
+        expectedExercise,
+    }
+}
+
+function seedUsers(db, users) {
+    const preppedUsers = users.map(user => ({
+        ...user,
+        user_password: bcrypt.hashSync(user.user_password, 1)
+    }))
+    return db.into('benchmark_user').insert(preppedUsers)
+        .then(() =>
+            db.raw(
+                `SELECT setval('benchmark_user_id_seq', ?)`,
+                [users[users.length - 1].id],
+            )
+        )
+}
+
+function seedBenchmarkTables(db, users, workouts, exercises, sets) {
+    // use a transaction to group the queries and auto rollback on any failure
+    return db.transaction(async trx => {
+        await seedUsers(trx, users)
+        await trx.into('benchmark_workout').insert(workouts)
+        // update the auto sequence to match the forced id values
+        await trx.raw(
+            `SELECT setval('benchmark_workout_id_seq', ?)`,
+            [workouts[workouts.length - 1].id],
+        )
+        //only insert exercises if there are some, also update the sequence counter
+        if (exercises) {
+            await trx.into('benchmark_exercise').insert(exercises)
+            await trx.raw(
+                `SELECT setval('benchmark_exercise_id_seq', ?)`,
+                [exercises[exercises.length -1].id],
+            )
+        } 
+    })
+}
+
+function seedMaliciousExercise(db, exercise) {
+    return db
+        .into('benchmark_exercise')
+        .insert([exercise])
+      
+}
+
 function cleanTables(db) {
     return db.transaction(trx =>
         trx.raw(
@@ -139,67 +226,19 @@ function cleanTables(db) {
 
 }
 
-function seedUsers(db, users) {
-    const preppedUsers = users.map(user => ({
-        ...user,
-        user_password: bcrypt.hashSync(user.user_password, 1)
-    }))
-    return db.into('benchmark_user').insert(preppedUsers)
-        .then(() =>
-            db.raw(
-                `SELECT setval('benchmark_user_id_seq', ?)`,
-                [users[users.length - 1].id],
-            )
-        )
-}
-
-function seedBenchmarkTables(db, users, workouts, exercises, sets) {
-    // use a transaction to group the queries and auto rollback on any failure
-    return db.transaction(async trx => {
-      await seedUsers(trx, users)
-      await trx.into('benchmark_workout').insert(workouts)
-      // update the auto sequence to match the forced id values
-      await trx.raw(
-        `SELECT setval('benchmark_workout_id_seq', ?)`,
-        [workouts[workouts.length - 1].id],
-      )
-      // only insert comments if there are some, also update the sequence counter
-    //   if (comments.length) {
-    //     await trx.into('blogful_comments').insert(comments)
-    //     await trx.raw(
-    //       `SELECT setval('blogful_comments_id_seq', ?)`,
-    //       [comments[comments.length - 1].id],
-    //     )
-    //   }
-    })
-  }
-
-function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
-    const token = jwt.sign({ user_id: user.id }, secret, {
-        subject: user.username,
-        algorithm: 'HS256',
-    })
-    return `Bearer ${token}`
-}
-
-function makeExpectedWorkout(workout) {
-    return {
-        id: workout.id,
-        date_created: workout.date_created.toISOString(),
-        user_id: workout.user_id,
-    }
-}
-
 module.exports = {
     makeUsersArray,
     makeWorkoutsArray,
     makeExercisesArray,
     makeSetsArray,
-
     makeWorkoutsFixtures,
-    cleanTables,
-    seedUsers,
-    seedBenchmarkTables,
     makeAuthHeader,
     makeExpectedWorkout,
+    makeExpectedExercise,
+    makeMaliciousExercise,
+    seedUsers,
+    seedBenchmarkTables,
+    seedMaliciousExercise,
+    cleanTables,
+    
 }

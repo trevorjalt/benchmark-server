@@ -20,6 +20,7 @@ async function getWorkouts(req, res, next) {
         const workouts = await WorkoutService.getAllWorkouts(req.app.get('db'))
 
         res.workouts = await res.json(workouts.map(WorkoutService.serializeWorkout))
+        
         next()
     } catch (error) {
         next(error)
@@ -37,11 +38,12 @@ async function createWorkout(req, res, next) {
             newWorkout
         )
 
-        await
-            res
-                .status(201)
-                .location(path.posix.join(req.originalUrl, `/${workout.id}`))
-                .json(WorkoutService.serializeWorkout(workout))
+        await res
+            .status(201)
+            .location(path.posix.join(req.originalUrl, `/${workout.id}`))
+            .json(WorkoutService.serializeWorkout(workout))
+        
+        next()
     } catch(error) {
         next(error)
     }
@@ -60,6 +62,7 @@ async function checkWorkoutExists(req, res, next) {
             })
 
         res.workout = workout
+
         next()
     } catch (error) {
         next(error)
@@ -69,6 +72,7 @@ async function checkWorkoutExists(req, res, next) {
 async function getSelectedWorkout(req, res, next) {
     try {
         await res.json(WorkoutService.serializeWorkout(res.workout))
+
         next()
     } catch (error) {
         next(error)
@@ -83,8 +87,10 @@ async function deleteSelectedWorkout(req, res, next) {
         )
 
         await res.status(204).end()
+
         next()
     } catch {}
+        next()
 }
 
 module.exports = workoutRouter

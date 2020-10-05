@@ -1,5 +1,4 @@
 const knex = require('knex')
-const jwt = require('jsonwebtoken')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 const supertest = require('supertest')
@@ -8,7 +7,7 @@ describe('Workout Endpoints', function() {
     let db
 
     const { testUsers, testWorkouts } = helpers.makeWorkoutsFixtures()
-    const testUser = testUsers[0]
+    // const testUser = testUsers[0]
 
     before('make knex instance', () => {
         db = knex({
@@ -25,7 +24,7 @@ describe('Workout Endpoints', function() {
     afterEach('cleanup', () => helpers.cleanTables(db))
 
     describe(`GET /api/workout`, () => {
-        context(`Given no workouts`, () => {
+        context(`Given no workouts in the database`, () => {
             beforeEach('insert users', () =>
                 helpers.seedUsers(
                     db,
@@ -51,9 +50,7 @@ describe('Workout Endpoints', function() {
 
             it(`responds with 200 and all the workouts`, () => {
                 const expectedWorkouts = testWorkouts.map(workout =>
-                    helpers.makeExpectedWorkout(
-                        workout
-                    )
+                    helpers.makeExpectedWorkout(workout)
                 )
                 return supertest(app)
                         .get('/api/workout')
@@ -73,11 +70,8 @@ describe('Workout Endpoints', function() {
 
         it(`creates a workout, responding with 201 and the new workout`, function() {
             this.retries(3)
-            const testWorkout = testWorkouts[0]
             const testUser = testUsers[0]
-            const newWorkout = {
-                date_created: new Date(),
-            }
+            const newWorkout = {}
             return supertest(app)
                 .post('/api/workout')
                 .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
@@ -85,7 +79,7 @@ describe('Workout Endpoints', function() {
                 .expect(201)
                 .expect(res => {
                     expect(res.body).to.have.property('id')
-                    // expect(res.body.user.id).to.eql(testUser.id)
+                    expect(res.body.user_id).to.eql(testUser.id)
                     expect(res.headers.location).to.eql(`/api/workout/${res.body.id}`)
                     const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' })
                     const actualDate = new Date(res.body.date_created).toLocaleString()
@@ -109,7 +103,7 @@ describe('Workout Endpoints', function() {
         
     
     describe(`GET /api/workout/:workout_id`, () => {
-        context(`Given no workouts`, () => {
+        context(`Given no workouts in the database`, () => {
             beforeEach(() =>
                 helpers.seedUsers(db, testUsers)
             )
@@ -121,7 +115,7 @@ describe('Workout Endpoints', function() {
                     .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                     .expect(404, { error: { message: `Workout not found` }})
             })
-          })
+        })
       
         context('Given there are workouts in the database', () => {
             beforeEach('insert workouts', () =>

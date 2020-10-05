@@ -1,5 +1,3 @@
-const xss = require('xss')
-const userRouter = require('../user/user-router')
 
 const WorkoutService = {
     getAllWorkouts(db) {
