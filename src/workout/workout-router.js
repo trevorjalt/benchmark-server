@@ -17,7 +17,10 @@ workoutRouter
     
 async function getWorkouts(req, res, next) {
     try {
-        const workouts = await WorkoutService.getAllWorkouts(req.app.get('db'))
+        const workouts = await WorkoutService.getUserWorkouts(
+            req.app.get('db'),
+            req.user.id
+        )
 
         res.workouts = await res.json(workouts.map(WorkoutService.serializeWorkout))
         

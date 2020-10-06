@@ -1,7 +1,7 @@
 const xss = require('xss')
 
 const SetService = {
-    getAllSets(db) {
+    getUserSets(db, id) {
         return db
             .from('benchmark_set AS exercise_set')
             .select(
@@ -12,6 +12,7 @@ const SetService = {
                 'exercise_set.exercise_id',
                 'exercise_set.user_id',
             )
+            .where('exercise_set.user_id', id)
     },
 
     getById(db, id) {

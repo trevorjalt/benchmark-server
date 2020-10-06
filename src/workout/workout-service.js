@@ -1,6 +1,6 @@
 
 const WorkoutService = {
-    getAllWorkouts(db) {
+    getUserWorkouts(db, id) {
         return db
             .from('benchmark_workout AS work')
             .select(
@@ -8,6 +8,37 @@ const WorkoutService = {
                 'work.date_created',
                 'work.user_id',
             )
+            .where('work.user_id', id)
+            
+            // .select ('*')
+            // .from('benchmark_workout')
+            // .select('*')
+            // .from('benchmark_exercise')
+            // .where('benchmark_exercise.workout_id', 1)
+
+            // .from('benchmark_user AS user')
+            // .select('id')
+            // .join('benchmark_workout AS workout')
+            
+
+            // .from('benchmark_workout AS work')
+            // .from('benchmark_workout')
+            // .select(
+            //     'benchmark_workout.id',
+            //     'benchmark_workout.date_created',
+            //     'benchmark_workout.user_id',
+            //     db.raw(
+            //         `json_strip_nulls(
+            //             json_build_object(
+            //                 'id', benchmark_exercise.id,
+            //                 'exercise_name', benchmark_exercise.exercise_name,
+            //                 'date_created', benchmark_exercise.date_created,
+            //                 'workout_id', benchmark_exercise.workout_id,
+            //             )
+            //         )`
+            //     ),
+            // )
+            // .leftJoin('benchmark_exercise', 'benchmark_workout.id', 'benchmark_exercise.workout_id',)
     },
 
     getById(db, id) {

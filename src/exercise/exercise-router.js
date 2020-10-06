@@ -21,10 +21,12 @@ exerciseRouter
 
 async function getExercises(req, res, next) {
     try {
-        const exercises = await ExerciseService.getAllExercises(req.app.get('db'))
+        const exercises = await ExerciseService.getUserExercises(
+            req.app.get('db'),
+            req.user.id
+        )
 
         res.exercises = await res.json(exercises.map(ExerciseService.serializeExercise))
-
         next()
     } catch (error) {
         next (error)

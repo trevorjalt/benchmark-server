@@ -1,7 +1,7 @@
 const xss = require('xss')
 
 const ExerciseService = {
-    getAllExercises(db) {
+    getUserExercises(db, id) {
         return db
             .from('benchmark_exercise AS exercise')
             .select(
@@ -12,6 +12,7 @@ const ExerciseService = {
                 'exercise.workout_id',
                 'exercise.user_id',
             )
+            .where('exercise.user_id', id)
     },
 
     getById(db, id) {

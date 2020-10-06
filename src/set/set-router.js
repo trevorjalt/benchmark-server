@@ -21,7 +21,10 @@ setRouter
 
 async function getSets(req, res, next) {
     try {
-        const sets = await SetService.getAllSets(req.app.get('db'))
+        const sets = await SetService.getUserSets(
+            req.app.get('db'),
+            req.user.id
+        )
 
         res.sets = await res.json(sets.map(SetService.serializeSet))
 

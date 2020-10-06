@@ -151,11 +151,11 @@ function makeExpectedSet(exercise_set) {
     }
 }
 
-// function makeExpectedExerciseUpdate(workout) {
-//     return {
-//         exercise_name: workout.exercise_name
-//     }
-// }
+function makeExpectedExerciseUpdate(workout) {
+    return {
+        exercise_name: workout.exercise_name
+    }
+}
 
 function makeMaliciousExercise(user, workout) {
     
@@ -176,41 +176,22 @@ function makeMaliciousExercise(user, workout) {
     }
 }
 
-function makeMaliciousSet(user, exercise) {
+function makeMaliciousExerciseUpdate(user, workout) {
 
-    const maliciousSet = {
-        id: 911,
-        set_weight: 'Naughty naughty very naughty <script>alert("xss");</script>',
-        set_repetition: 'Naughty naughty very naughty <script>alert("xss");</script>',
-        date_created: new Date(),
-        exercise_id: exercise.id,
+    const maliciousUpdate = {
+        exercise_name: 'Naughty naughty very naughty <script>alert("xss");</script>',
+        workout_id: workout.id,
         user_id: user.id,
     }
-    const expectedSet = {
-        ...makeExpectedSet(maliciousSet),
-        set_weight: 'Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
-        set_repetition: 'Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
+    const expectedUpdate = {
+        ...makeExpectedExerciseUpdate(maliciousUpdate),
+        exercise_name: 'Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
     }
     return {
-        maliciousSet,
-        expectedSet,
+        maliciousUpdate,
+        expectedUpdate,
     }
 }
-
-// function makeMaliciousExerciseUpdate() {
-
-//     const maliciousUpdate = {
-//         exercise_name: 'Naughty naughty very naughty <script>alert("xss");</script>'
-//     }
-//     const expectedUpdate = {
-//         ...makeExpectedExerciseUpdate(maliciousUpdate),
-//         exercise_name: 'Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
-//     }
-//     return {
-//         maliciousUpdate,
-//         expectedUpdate,
-//     }
-// }
 
 function seedUsers(db, users) {
     const preppedUsers = users.map(user => ({
@@ -262,10 +243,10 @@ function seedMaliciousExercise(db, exercise) {
       
 }
 
-function seedMaliciousSet(db, exercise_set) {
+function seedMaliciousExerciseUpdate (db, update) {
     return db
-        .into('benchmark_set')
-        .insert([exercise_set])
+        .into('benchmark_exercise')
+        .update([update])
 }
 
 function cleanTables(db) {
@@ -304,15 +285,14 @@ module.exports = {
     makeExpectedWorkout,
     makeExpectedExercise,
     makeExpectedSet,
-    // makeExpectedExerciseUpdate,
+    makeExpectedExerciseUpdate,
     makeMaliciousExercise,
-    // makeMaliciousExerciseUpdate,
-    makeMaliciousSet,
+    makeMaliciousExerciseUpdate,
 
     seedUsers,
     seedBenchmarkTables,
     seedMaliciousExercise,
-    seedMaliciousSet,
+    seedMaliciousExerciseUpdate,
     cleanTables,
     
 }

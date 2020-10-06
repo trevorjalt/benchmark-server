@@ -304,25 +304,38 @@ describe('Exercise Endpoints', function() {
         //     const testUser = testUsers[0]
         //     const testWorkout = testWorkouts[0]
         //     const {
-        //         maliciousExercise,
-        //         expectedExercise,
-        //     } = helpers.makeMaliciousExercise(testUser, testWorkout)
-      
-        //     beforeEach('insert malicious exercise', () => {
-        //         return helpers.seedMaliciousExercise(
+        //         maliciousUpdate,
+        //         expectedUpdate,
+        //     } = helpers.makeMaliciousExerciseUpdate(testUser, testWorkout)
+            
+        //     beforeEach('insert exercises', () =>
+        //         helpers.seedBenchmarkTables(
+        //             db,
+        //             testUsers,
+        //             testWorkouts,
+        //             testExercises,
+        //         ),
+                
+        //         // helpers.seedMaliciousExerciseUpdate(
+        //         //     db,
+        //         //     maliciousUpdate,
+        //         // )
+        //     )
+        //     beforeEach('insert malicious exercise update', () => {
+        //         return helpers.seedMaliciousExerciseUpdate(
         //             db,
         //             // testUser,
-        //             maliciousExercise,
+        //             maliciousUpdate,
         //         )
         //     })
       
         //     it('removes XSS attack content', () => {
         //         return supertest(app)
-        //             .get(`/api/exercise/${maliciousExercise.id}`)
+        //             .patch(`/api/exercise/${maliciousUpdate.id}`)
         //             .set('Authorization', helpers.makeAuthHeader(testUser))
         //             .expect(200)
         //             .expect(res => {
-        //             expect(res.body.exercise_name).to.eql(expectedExercise.exercise_name)
+        //             expect(res.body.exercise_name).to.eql(expectedUpdate.exercise_name)
         //             })
         //     })
         // })
