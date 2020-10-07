@@ -9,6 +9,7 @@ const WorkoutService = {
                 'work.user_id',
             )
             .where('work.user_id', id)
+            .orderBy('work.date_created', 'desc')
     },
 
     getById(db, id) {

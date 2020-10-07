@@ -109,8 +109,8 @@ async function deleteSelectedSet(req, res, next) {
 
 async function updateSelectedSet(req, res, next) {
     try {
-        const { set_weight, set_repetition, date_modified } = req.body
-        const setToUpdate = { set_weight, set_repetition, date_modified }
+        const { set_weight, set_repetition } = req.body
+        const setToUpdate = { set_weight, set_repetition }
 
         const numberOfValues = Object.values(setToUpdate).filter(Boolean).length
         if (numberOfValues === 0)
@@ -126,7 +126,7 @@ async function updateSelectedSet(req, res, next) {
 
         await res.status(204).end()
 
-        next()
+        // next()
     } catch (error) {
         next(error)
     }

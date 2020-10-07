@@ -13,6 +13,7 @@ const SetService = {
                 'exercise_set.user_id',
             )
             .where('exercise_set.user_id', id)
+            .orderBy('exercise_set.id', 'asc')
     },
 
     getById(db, id) {
