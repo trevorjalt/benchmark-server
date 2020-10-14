@@ -75,20 +75,6 @@ describe('Set Endpoints', function() {
             )
         )
 
-        // it.only(`responds 400 when invalid input`), function () {
-        //     const newExerciseSet = {
-        //         set_weight: '200',
-        //         set_repetition: '5',
-        //         exercercise_id: testExercise.id,
-        //     }
-        //     return supertest(app)
-        //         .post('/api/set')
-        //         .set('Authorization', helpers.makeAuthHeader(testUser))
-        //         .send(newExerciseSet)
-        //         .expect(400, { error: { message:`Invalid request` }})
-
-        // }
-
         it(`creates a set, responding with 201 and the new set`, function() {
             this.retries(3)
             const newExerciseSet = {

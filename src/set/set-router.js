@@ -125,8 +125,6 @@ async function updateSelectedSet(req, res, next) {
         )
 
         await res.status(204).end()
-
-        // next()
     } catch (error) {
         next(error)
     }

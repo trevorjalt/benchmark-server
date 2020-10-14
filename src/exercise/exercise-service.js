@@ -36,7 +36,6 @@ const ExerciseService = {
             id: exercise.id,
             exercise_name: xss(exercise.exercise_name),
             date_created: exercise.date_created,
-            // date_modified: exercise.date_modified,
             workout_id: exercise.workout_id,
             user_id: exercise.user_id,
         }

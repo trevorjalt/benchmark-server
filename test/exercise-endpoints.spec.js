@@ -299,45 +299,5 @@ describe('Exercise Endpoints', function() {
                     )
             })
         })
-
-        // context(`Given an XSS attack update`, () => {
-        //     const testUser = testUsers[0]
-        //     const testWorkout = testWorkouts[0]
-        //     const {
-        //         maliciousUpdate,
-        //         expectedUpdate,
-        //     } = helpers.makeMaliciousExerciseUpdate(testUser, testWorkout)
-            
-        //     beforeEach('insert exercises', () =>
-        //         helpers.seedBenchmarkTables(
-        //             db,
-        //             testUsers,
-        //             testWorkouts,
-        //             testExercises,
-        //         ),
-                
-        //         // helpers.seedMaliciousExerciseUpdate(
-        //         //     db,
-        //         //     maliciousUpdate,
-        //         // )
-        //     )
-        //     beforeEach('insert malicious exercise update', () => {
-        //         return helpers.seedMaliciousExerciseUpdate(
-        //             db,
-        //             // testUser,
-        //             maliciousUpdate,
-        //         )
-        //     })
-      
-        //     it('removes XSS attack content', () => {
-        //         return supertest(app)
-        //             .patch(`/api/exercise/${maliciousUpdate.id}`)
-        //             .set('Authorization', helpers.makeAuthHeader(testUser))
-        //             .expect(200)
-        //             .expect(res => {
-        //             expect(res.body.exercise_name).to.eql(expectedUpdate.exercise_name)
-        //             })
-        //     })
-        // })
     })
 })
