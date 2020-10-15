@@ -179,6 +179,4 @@ describe('Workout Endpoints', function() {
             })
         })
     })
-
 })
-

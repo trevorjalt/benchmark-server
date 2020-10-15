@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const xss = require('xss')
 
 function makeUsersArray() {
     return [
@@ -272,7 +271,6 @@ function cleanTables(db) {
             ])
         )
     )
-
 }
 
 module.exports = {
@@ -293,6 +291,5 @@ module.exports = {
     seedBenchmarkTables,
     seedMaliciousExercise,
     seedMaliciousExerciseUpdate,
-    cleanTables,
-    
+    cleanTables,   
 }
