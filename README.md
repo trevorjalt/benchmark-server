@@ -4,7 +4,7 @@ Strength-training tracking designed with the user in mind.  Create, update, and 
 
 `benchMark Api` is the backend for `benchMark`.  To see `benchMark` in action, check out LINK-PLACEHOLDER.
 
-The `benchMark` front end can be found at: [benchMark-client](https://github.com/trevorjalt/benchmark-client/ "benchMark Client")
+The `benchMark` frontend can be found at: [benchMark-client](https://github.com/trevorjalt/benchmark-client/ "benchMark Client")
 
 ## ready to break some limits?
 
