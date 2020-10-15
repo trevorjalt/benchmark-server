@@ -48,7 +48,6 @@ Change directory into the cloned repository
 cd benchmark-server
 ````
 
-
 Make a fresh start of the git history for this project
 
 ```` 
@@ -61,8 +60,23 @@ Install the node dependencies
 npm install
 ````
 
-5) Create a `.env` file in the project root, and include the following:
-```
+Create the development user
+
+````
+createuser -Pw --interactive 
+````
+
+Type `kakarot` for the name of the `role` to add
+
+Select `y` when asked if the user should be a super user
+
+Create the development databases
+
+````
+createdb -U kakarot -d benchmark && createdb -U kakarot -d benchmark-test
+````
+
+Create a `.env` file in the project root, and include the following:
 
 ````
 NODE_ENV=development
@@ -70,7 +84,6 @@ PORT=8000
 DB_URL=postgresql://kakarot@localhost/benchmark
 TEST_DB_URL=postgresql://kakarot@localhost/benchmark-test
 ````
-
 
 
 
