@@ -70,6 +70,8 @@ Type `kakarot` for the name of the `role` to add
 
 Select `y` when asked if the user should be a super user
 
+Press `return` (enter) for no password
+
 Create the development databases
 
 ````
@@ -85,35 +87,51 @@ DB_URL=postgresql://kakarot@localhost/benchmark
 TEST_DB_URL=postgresql://kakarot@localhost/benchmark-test
 ````
 
+Start the Postgres server
+
+````
+pg_ctl start
+````
+
+Run the migrations for the development database
+
+````
+npm run migrate
+````
+
+Run the migrations for the development test database
+
+````
+npm run migrate:test
+````
+
+Seed the development database
+
+````
+psql -U kakarot -d benchmark -f ./seeds/seed.benchmark_tables.sql
+````
+
+#### quick start scripts.
+
+Run the benchmark tests
+
+````
+npm t
+````
+
+Start the application
+
+````
+npm start
+````
+
+Start nodemon for the application 
+
+````
+npm run dev
+````
 
 
-# OLD README
-
-# benchMark
-
-This is a boilerplate project used for starting new projects!
-
-## Set up
-
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
-
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-
-4. Install the node dependencies `npm install`
-
-5. ENV instructions
-
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
-
-## Scripts
-
-Start the application `npm start`
-
-Start nodemon for the application `npm run dev`
-
-Run the tests `npm test`
 
 ## Deploying
 
