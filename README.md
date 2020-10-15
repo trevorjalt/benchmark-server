@@ -10,9 +10,17 @@ The `benchMark` front end can be found at: [benchMark-client](https://github.com
 
 Here at `benchmark` we are strength-training enthusiasts. We understand the amount of stuff you carry at the gym as you work to break your limits. So we're here to help. `benchMark` is an easy solution allowing you to leave that pen and paper at home, and quickly log and track your workout progress in the same device that plays those tunes to keep you pumped up.
 
+## table of contents.
+
+* [the tech](#the-tech)
+  * [backend](#backend)
+  * [production](#production)
+* [setup](#setup)
+* [quick start](#quick-start-scripts)
+
 ## the tech.
 
-#### backend.
+### backend.
 
 * Node and Express
   * Authentication via JWT
@@ -24,17 +32,17 @@ Here at `benchmark` we are strength-training enthusiasts. We understand the amou
   * Postgres
   * Knex.js - SQL wrapper
 
-#### production.
+### production.
 
 Deployed via Heroku
 
 ## setup.
 
-#### requirements.
+### requirements.
 * Postgres v8.3.3
 * Node v12.18.3
 
-#### local setup.
+### local setup.
 
 Clone this repository to your local machine 
 
