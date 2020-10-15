@@ -10,10 +10,6 @@ The `benchMark` front end can be found at: [benchMark-client](https://github.com
 
 Here at `benchmark` we are strength-training enthusiasts. We understand the amount of stuff you carry at the gym as you work to break your limits. So we're here to help. `benchMark` is an easy solution allowing you to leave that pen and paper at home, and quickly log and track your workout progress in the same device that plays those tunes to keep you pumped up.
 
-## a quick look at our lewk.
-
-![benchMark app overview](/src/images/benchmark-app-readme-overview.png)
-
 ## the tech.
 
 #### backend.
@@ -34,19 +30,48 @@ Deployed via Heroku
 
 ## let's get started.
 
-#### dependencies.
-* Postgres
-* Node
+#### requirements.
+* Postgres v8.3.3
+* Node v12.18.3
 
 #### local setup.
 
-1) Clone this repository to your local machine `git clone https://github.com/trevorjalt/benchmark-server benchmark-server`
+Clone this repository to your local machine 
 
-2) `cd` into the cloned repository
+````
+git clone https://github.com/trevorjalt/benchmark-server benchmark-server
+````
 
-3) Make a fresh start of the git history for this project with `rm -rf .git && git init`
+Change directory into the cloned repository
 
-4) Install the node dependencies `npm install`
+````
+cd benchmark-server
+````
+
+
+Make a fresh start of the git history for this project
+
+```` 
+rm -rf .git && git init
+````
+
+Install the node dependencies 
+
+````
+npm install
+````
+
+5) Create a `.env` file in the project root, and include the following:
+```
+
+````
+NODE_ENV=development
+PORT=8000
+DB_URL=postgresql://kakarot@localhost/benchmark
+TEST_DB_URL=postgresql://kakarot@localhost/benchmark-test
+````
+
+
 
 
 # OLD README
