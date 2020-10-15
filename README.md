@@ -16,6 +16,8 @@ Here at `benchmark` we are strength-training enthusiasts. We understand the amou
   * [backend](#backend)
   * [production](#production)
 * [setup](#setup)
+  * [requirements](#requirements)
+  * [local setup](#local-setup)
 * [quick start](#quick-start-scripts)
 
 ## the tech.
