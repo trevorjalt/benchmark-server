@@ -1,3 +1,50 @@
+# benchMark Api
+
+Strength-training tracking designed with the user in mind.  Create, update, and review workouts in real time - with the user remaining in the driver seat for the control of their data.
+
+benchMark Api is the backend for `benchMark`.  To see `benchMark` in action, check out LINK-PLACEHOLDER.
+
+The benchMark front end can be found at: [benchMark-client](https://github.com/trevorjalt/benchmark-client/ "benchMark Client")
+
+## ready to break some limits?
+
+Here at benchmark we are strength-training enthusiasts. We understand the amount of stuff you carry at the gym as you work to break your limits. So we're here to help. benchMark is an easy solution allowing you to leave that pen and paper at home, and quickly log and track your workout progress in the same device that plays those tunes to keep you pumped up.
+
+## a quick look at our lewk.
+
+![benchMark app overview](/src/images/benchmark-app-readme-overview.png)
+
+## the tech.
+
+#### backend.
+
+* Node and Express
+  * Authentication via JWT
+  * RESTful Api
+* Testing
+  * Supertest (integration)
+  * Mocha and Chai (unit)
+* Database
+  * Postgres
+  * Knex.js - SQL wrapper
+
+#### production.
+
+Deployed via Heroku
+
+## let's get started.
+
+#### dependencies.
+* Postgres
+* Node
+
+#### local setup.
+
+1) git clone https://github.com/trevorjalt/benchmark-server benchmark-server
+
+
+# OLD README
+
 # benchMark
 
 This is a boilerplate project used for starting new projects!
