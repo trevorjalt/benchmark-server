@@ -28,7 +28,7 @@ Here at `benchmark` we are strength-training enthusiasts. We understand the amou
 
 Deployed via Heroku
 
-## let's get started.
+## setup.
 
 #### requirements.
 * Postgres v8.3.3
@@ -111,7 +111,7 @@ Seed the development database
 psql -U kakarot -d benchmark -f ./seeds/seed.benchmark_tables.sql
 ````
 
-#### quick start scripts.
+## quick start scripts.
 
 Run the benchmark tests
 
