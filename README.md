@@ -423,6 +423,7 @@ request body requires:
 
 ````
 {
+  set_id: [number],
   set_weight: [number],
   set_repetition: [number]
 }
