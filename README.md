@@ -26,6 +26,7 @@ Here at `benchmark` we are strength-training enthusiasts. We understand the amou
     * [/api/user/](#apiuser)
     * [/api/auth/login](#apiauthlogin)
   * [protected endpoints](#protected-endpoints)
+    
  
 ## the tech.
 
@@ -161,13 +162,13 @@ npm run dev
 
 ### authentication.
 
-benchMark is supported by JWT authentication. A valid `username` and `user_password` must be posted to the [/api/auth/login/](#apiauthlogin) endpoint.  This will return a bearer token that must be included in the header for all protected endpoints.  To create a valid user, see the [/api/user/](#apiuser)
+benchMark is supported by JWT authentication. A valid `username` and `user_password` must be posted to the [/api/auth/login/](#apiauthlogin) endpoint.  This will return a bearer token that must be included in the header for all protected endpoints.  To create a valid user, see [/api/user/](#apiuser)
 
 ### public endpoints.
 
 #### /api/user/
 
-* POST
+* `POST`
 
 request body requires:
 
@@ -179,7 +180,7 @@ request body requires:
 }
 ````
 
-request body supports an optional:
+`request body` supports an optional:
 
 ````
 {
@@ -189,9 +190,9 @@ request body supports an optional:
 
 #### /api/auth/login
 
-* POST
+* `POST`
 
-request body requires:
+`request body` requires:
 
 ````
 {
@@ -199,5 +200,21 @@ request body requires:
   user_password: '',
 }
 ````
+
+### protected endpoints.
+
+#### /api/user/:user_id
+
+* `GET`
+
+`Header` must include a `JWT Token`
+
+#### /api/auth/refresh
+
+* `POST`
+
+`Header` must include a `JWT Token`
+
+
 
 ## set your benchMark.  break your limits. 
