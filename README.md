@@ -23,7 +23,8 @@ Here at `benchmark` we are strength-training enthusiasts. We understand the amou
   * [overview](#overview)
   * [authentication](#authentication)
   * [public endpoints](#public-endpoints)
-    * [/api/user/](#/api/user/)
+    * [/api/user/](#apiuser)
+    * [/api/auth/login](#apiauthlogin)
   * [protected endpoints](#protected-endpoints)
  
 ## the tech.
@@ -183,6 +184,19 @@ request body supports an optional:
 ````
 {
   nickname: ''
+}
+````
+
+#### /api/auth/login
+
+* POST
+
+request body requires:
+
+````
+{
+  username: '',
+  user_password: '',
 }
 ````
 
