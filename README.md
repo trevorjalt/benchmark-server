@@ -19,7 +19,13 @@ Here at `benchmark` we are strength-training enthusiasts. We understand the amou
   * [requirements](#requirements)
   * [local setup](#local-setup)
 * [quick start](#quick-start-scripts)
-
+* [endpoints](#endpoints)
+  * [overview](#overview)
+  * [authentication](#authentication)
+  * [public endpoints](#public-endpoints)
+    * [/api/user/](#/api/user/)
+  * [protected endpoints](#protected-endpoints)
+ 
 ## the tech.
 
 ### backend.
@@ -141,4 +147,43 @@ Start nodemon for the application
 npm run dev
 ````
 
-## have fun!
+## endpoints.
+
+### overview.
+
+* endpoints
+  * /api/auth 
+  * /api/user
+  * /api/workout 
+  * /api/exercise
+  * /api/set
+
+### authentication.
+
+benchMark is supported by JWT authentication. A valid `username` and `user_password` must be posted to the `/api/auth/login` endpoint.  This will return a bearer token that must be included in the header for all protected endpoints.  To create a valid user, see the `/api/user/`.
+
+### public endpoints.
+
+#### /api/user/
+
+* POST
+
+request body requires:
+
+````
+{
+  username: '',
+  user_password: '',
+  email: ''
+}
+````
+
+request body supports an optional:
+
+````
+{
+  nickname: ''
+}
+````
+
+## set your benchMark.  break your limits. 
