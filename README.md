@@ -30,6 +30,8 @@ Here at `benchmark` we are strength-training enthusiasts. We understand the amou
     * [/api/auth/refresh/](#apiauthrefresh)
     * [/api/workout/](#apiworkout)
     * [/api/workout/:workout_id/](#apiworkoutworkout_id)
+    * [/api/exercise/](#apiexercise)
+    * [/api/exercise/exercise_id](#apiexerciseexercise_id)
 
  
 ## the tech.
@@ -201,7 +203,7 @@ request body requires:
 ````
 {
   username: '',
-  user_password: '',
+  user_password: ''
 }
 ````
 
@@ -227,11 +229,11 @@ request body requires:
 
 ````
 {
-  username: '',
+  username: ''
 }
 ````
 
-### /api/workout/
+#### /api/workout/
 
 * `GET`
 
@@ -257,7 +259,7 @@ request body requires:
 }
 ````
 
-### /api/workout/:workout_id/
+#### /api/workout/:workout_id/
 
 * `GET`
 
@@ -267,7 +269,6 @@ request body requires:
 
 ````
 {
-  user_id: [number],
   workout_id: [number]
 }
 ````
@@ -280,11 +281,83 @@ request body requires:
 
 ````
 {
-  user_id: [number],
   workout_id: [number]
 }
 ````
 
+#### /api/exercise/
+
+* `GET`
+
+`Header` must include a `JWT Token`
+
+`request body` requires:
+
+````
+{
+  user_id: [number]
+}
+````
+
+* `POST`
+
+`Header` must include a `JWT Token`
+
+`request body` requires:
+
+````
+{
+  workout_id: [number],
+  exercise_name: ''
+}
+````
+
+#### /api/exercise/:exercise_id/
+
+* `GET`
+
+`Header` must include a `JWT Token`
+
+`request body` requires:
+
+````
+{
+  exercise_id: [number]
+}
+````
+
+* `DELETE`
+
+`Header` must include a `JWT Token`
+
+`request body` requires:
+
+````
+{
+  exercise_id: [number]
+}
+````
+
+* `PATCH`
+
+`Header` must include a `JWT Token`
+
+`request body` requires:
+
+````
+{
+  exercise_id: [number],
+  exercise_name: ''
+}
+````
+
+`request body` supports an optional:
+
+````
+{
+  date_modified: [date]
+}
+````
 
 
 ## set your benchMark.  break your limits. 
