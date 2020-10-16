@@ -31,7 +31,9 @@ Here at `benchmark` we are strength-training enthusiasts. We understand the amou
     * [/api/workout/](#apiworkout)
     * [/api/workout/:workout_id/](#apiworkoutworkout_id)
     * [/api/exercise/](#apiexercise)
-    * [/api/exercise/exercise_id](#apiexerciseexercise_id)
+    * [/api/exercise/:exercise_id](#apiexerciseexercise_id)
+    * [/api/set/](#apiset)
+    * [/api/set/:set_id](#apisetset_id)
 
  
 ## the tech.
@@ -359,5 +361,71 @@ request body requires:
 }
 ````
 
+#### /api/set/
+
+* `GET`
+
+`Header` must include a `JWT Token`
+
+`request body` requires:
+
+````
+{
+  user_id: [number]
+}
+````
+
+* `POST`
+
+`Header` must include a `JWT Token`
+
+`request body` requires:
+
+````
+{
+  exercise_id: [number],
+  set_weight: [number],
+  set_repetition: [number]
+}
+````
+
+#### /api/set/:set_id/
+
+* `GET`
+
+`Header` must include a `JWT Token`
+
+`request body` requires:
+
+````
+{
+  set_id: [number]
+}
+````
+
+* `DELETE`
+
+`Header` must include a `JWT Token`
+
+`request body` requires:
+
+````
+{
+  set_id: [number]
+}
+````
+
+* `PATCH`
+
+`Header` must include a `JWT Token`
+
+`request body` requires:
+
+````
+{
+  set_weight: [number],
+  set_repetition: [number]
+}
+````
 
 ## set your benchMark.  break your limits. 
