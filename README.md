@@ -24,10 +24,12 @@ Here at `benchmark` we are strength-training enthusiasts. We understand the amou
   * [authentication](#authentication)
   * [public endpoints](#public-endpoints)
     * [/api/user/](#apiuser)
-    * [/api/auth/login](#apiauthlogin)
+    * [/api/auth/login/](#apiauthlogin)
   * [protected endpoints](#protected-endpoints)
-    * [/api/user/:user_id](#apiuseruser_id)
-    * [/api/auth/refresh](#apiauthrefresh)
+    * [/api/user/:user_id/](#apiuseruser_id)
+    * [/api/auth/refresh/](#apiauthrefresh)
+    * [/api/workout/](#apiworkout)
+    * [/api/workout/:workout_id/](#apiworkoutworkout_id)
 
  
 ## the tech.
@@ -211,11 +213,77 @@ request body requires:
 
 `Header` must include a `JWT Token`
 
+````
+{
+  user_id: [number]
+}
+````
+
 #### /api/auth/refresh
 
 * `POST`
 
 `Header` must include a `JWT Token`
+
+````
+{
+  username: '',
+}
+````
+
+### /api/workout/
+
+* `GET`
+
+`Header` must include a `JWT Token`
+
+`request body` requires:
+
+````
+{
+  user_id: [number]
+}
+````
+
+* `POST`
+
+`Header` must include a `JWT Token`
+
+`request body` requires:
+
+````
+{
+  user_id: [number]
+}
+````
+
+### /api/workout/:workout_id/
+
+* `GET`
+
+`Header` must include a `JWT Token`
+
+`request body` requires:
+
+````
+{
+  user_id: [number],
+  workout_id: [number]
+}
+````
+
+* `DELETE`
+
+`Header` must include a `JWT Token`
+
+`request body` requires:
+
+````
+{
+  user_id: [number],
+  workout_id: [number]
+}
+````
 
 
 

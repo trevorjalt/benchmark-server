@@ -56,7 +56,7 @@ async function postUserLogin(req, res, next) {
     
 async function refresh(req, res) {
     try {
-        const sub = req.user.user_name
+        const sub = req.user.username
         const payload = { user_id: req.user.id }
         await res.send({
         authToken: AuthService.createJwt(sub, payload),
