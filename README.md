@@ -161,7 +161,7 @@ npm run dev
 
 ### authentication.
 
-benchMark is supported by JWT authentication. A valid `username` and `user_password` must be posted to the `/api/auth/login` endpoint.  This will return a bearer token that must be included in the header for all protected endpoints.  To create a valid user, see the [/api/user/](#apiuser)
+benchMark is supported by JWT authentication. A valid `username` and `user_password` must be posted to the [/api/auth/login/](#apiauthlogin) endpoint.  This will return a bearer token that must be included in the header for all protected endpoints.  To create a valid user, see the [/api/user/](#apiuser)
 
 ### public endpoints.
 
