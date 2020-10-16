@@ -26,7 +26,9 @@ Here at `benchmark` we are strength-training enthusiasts. We understand the amou
     * [/api/user/](#apiuser)
     * [/api/auth/login](#apiauthlogin)
   * [protected endpoints](#protected-endpoints)
-    
+    * [/api/user/:user_id](#apiuseruser_id)
+    * [/api/auth/refresh](#apiauthrefresh)
+
  
 ## the tech.
 
