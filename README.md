@@ -101,7 +101,7 @@ Press `return` (enter) for no password
 Create the development databases
 
 ````
-createdb -U kakarot -d benchmark && createdb -U kakarot -d benchmark-test
+createdb -U kakarot benchmark && createdb -U kakarot benchmark-test
 ````
 
 Create a `.env` file in the project root, and include the following:
