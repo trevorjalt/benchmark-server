@@ -58,7 +58,7 @@ Deployed via Heroku
 
 ### requirements.
 * Postgres v8.3.3
-* Node v12.18.3
+* Node v15.11.0
 
 ### local setup.
 
