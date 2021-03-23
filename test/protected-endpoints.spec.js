@@ -43,7 +43,7 @@ describe('Protected endpoints', function() {
     {
       name: 'POST /api/workout',
       path: '/api/workout',
-      method: supertest(app).get,
+      method: supertest(app).post,
     },
     {
       name: 'GET /api/workout/:workout_id',
@@ -53,7 +53,7 @@ describe('Protected endpoints', function() {
     {
       name: 'DELETE /api/workout/:workout_id',
       path: '/api/workout/1',
-      method: supertest(app).get,
+      method: supertest(app).delete,
     },
     {
       name: 'GET /api/exercise',
@@ -63,7 +63,7 @@ describe('Protected endpoints', function() {
     {
       name: 'POST /api/exercise',
       path: '/api/exercise',
-      method: supertest(app).get,
+      method: supertest(app).post,
     },
     {
       name: 'GET /api/exercise/:exercise_id',
@@ -73,12 +73,12 @@ describe('Protected endpoints', function() {
     {
       name: 'DELETE /api/exercise/:exercise_id',
       path: '/api/exercise/1',
-      method: supertest(app).get,
+      method: supertest(app).delete,
     },
     {
       name: 'PATCH /api/exercise/:exercise_id',
       path: '/api/exercise/1',
-      method: supertest(app).get,
+      method: supertest(app).patch,
     },
     {
       name: 'GET /api/set',
@@ -88,7 +88,7 @@ describe('Protected endpoints', function() {
     {
       name: 'POST /api/set',
       path: '/api/set',
-      method: supertest(app).get,
+      method: supertest(app).post,
     },
     {
       name: 'GET /api/set/:set_id',
@@ -98,12 +98,12 @@ describe('Protected endpoints', function() {
     {
       name: 'DELETE /api/set/:set_id',
       path: '/api/set/1',
-      method: supertest(app).get,
+      method: supertest(app).delete,
     },
     {
       name: 'PATCH /api/set/:set_id',
       path: '/api/set/1',
-      method: supertest(app).get,
+      method: supertest(app).patch,
     },
     {
       name: 'POST /api/auth/refresh',

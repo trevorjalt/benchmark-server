@@ -24,6 +24,10 @@ app.use('/api/workout', workoutRouter)
 app.use('/api/exercise', exerciseRouter)
 app.use('/api/set', setRouter)
 
+app.get('/', (req, res) => {
+    res.send('Hello, world!');
+})
+
 app.use(function errorHandler(error, req, res, next) {
     let response
     if (NODE_ENV === 'production') {
